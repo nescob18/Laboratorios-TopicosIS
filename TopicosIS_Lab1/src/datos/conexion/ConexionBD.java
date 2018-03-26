@@ -16,26 +16,26 @@ import java.sql.SQLException;
 public abstract class ConexionBD {
     
 	public static Connection conectar() {
-		Connection con = null;
+            Connection con = null;
                 
-                final String bD = "mysql";
-                final String hostBD = "sql9.freemysqlhosting.net";
-                final String puerto = "3306";
-                final String nombreBD = "sql9227841";
-		final String url = "jdbc:" + bD + "://" + hostBD + ":" + puerto + "/" + nombreBD;
+            final String bD = "mysql";
+            final String hostBD = "sql9.freemysqlhosting.net";
+            final String puerto = "3306";
+            final String nombreBD = "sql9227841";
+            final String url = "jdbc:" + bD + "://" + hostBD + ":" + puerto + "/" + nombreBD;
                 
-		final String usuario = "sql9227841";
-                final String password = "6LriqwsrsY";
+            final String usuario = "sql9227841";
+            final String password = "6LriqwsrsY";
 
-		try {
-			con = DriverManager.getConnection(url,usuario,password);
-			if (con != null) {
-				System.out.println("Conectado");
-			}
-		} catch (SQLException e) {
-			System.out.println("No se pudo conectar a la base de datos");
-			e.printStackTrace();
-		}
-		return con;
+            try {
+                con = DriverManager.getConnection(url,usuario,password);
+                if (con != null) {
+                    System.out.println("Conectado");
+                }
+            } catch (SQLException e) {
+                System.out.println("No se pudo conectar a la base de datos");
+                e.printStackTrace();
+            }
+            return con;
 	}
 }

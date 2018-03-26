@@ -13,6 +13,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Nescob18
+ * @author Yorman Aguirre
  */
 public abstract class esquemaBD {
     
@@ -21,10 +22,10 @@ public abstract class esquemaBD {
         
         arrTabla.add( 
         "CREATE TABLE IF NOT EXISTS Estudiante (" +
-        "codigo BIGINT(12) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-        "nombre VARCHAR(20)," +
-        "apellidos VARCHAR(30)," +
-        "fechaNacimiento TINYINT(2) UNSIGNED)"          
+        "Codigo BIGINT(12) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+        "Nombre VARCHAR(20)," +
+        "Apellidos VARCHAR(30)," +
+        "FechaNacimiento DATE)"          
         );
         
         return arrTabla;

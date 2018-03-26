@@ -8,11 +8,12 @@ package topicosis_lab1;
 import java.sql.Connection;
 import datos.conexion.ConexionBD;
 import datos.esquemaBD.esquemaBD;
-
+import presentacion.vista.ViewEstudiante;
 
 /**
  *
  * @author Nescob18
+ * @author Yorman Aguirre
  */
 public class TopicosIS_Lab1 {
 
@@ -22,6 +23,7 @@ public class TopicosIS_Lab1 {
     public static void main(String[] args) {
         Connection con = ConexionBD.conectar();
         esquemaBD.crearTablasBD(con);
+        ViewEstudiante vista = new ViewEstudiante();
+        vista.setVisible(true);
     }
-    
 }
