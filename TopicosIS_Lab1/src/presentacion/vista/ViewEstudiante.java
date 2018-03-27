@@ -5,18 +5,11 @@
  */
 package presentacion.vista;
 
-import java.util.Date;
-import java.text.ParseException;
-import java.util.ArrayList;
-
 import controlador.ControladorEstudiante;
 import datos.modelo.Estudiante;
 import java.awt.Color;
-
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -32,16 +25,6 @@ public class ViewEstudiante extends javax.swing.JFrame {
         initComponents();
         controladorEstudiante = new ControladorEstudiante();
     }
-    
-    public static void verTodosEstudiantes(ArrayList<Estudiante> estudiantes){
-        for (Estudiante estudiante : estudiantes) {
-            //System.out.println("Datos del : "+ estudiante);
-        }	
-    }
-    
-    public static void verEstudiante(Estudiante estudiante){
-        
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,20 +38,24 @@ public class ViewEstudiante extends javax.swing.JFrame {
         tablaEstudiantes = new javax.swing.JFrame();
         jScrollPane2 = new javax.swing.JScrollPane();
         estudiantesInfo = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        tituloListarEstudiantes = new javax.swing.JLabel();
+        line2 = new javax.swing.JLabel();
+        line1 = new javax.swing.JLabel();
+        tituloAdministración = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         txtApellidos = new javax.swing.JTextField();
         txtFecha = new javax.swing.JFormattedTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lblApellidos = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtMensaje = new javax.swing.JLabel();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         tablaEstudiantes.setMinimumSize(new java.awt.Dimension(500, 500));
         tablaEstudiantes.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -81,22 +68,43 @@ public class ViewEstudiante extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Código", "Nombre", "Apellidos", "Fecha Nacimiento"
             }
-        ));
-        estudiantesInfo.setCellSelectionEnabled(true);
-        jScrollPane2.setViewportView(estudiantesInfo);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
 
-        tablaEstudiantes.getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        estudiantesInfo.setCellSelectionEnabled(true);
+        estudiantesInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                estudiantesInfoMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(estudiantesInfo);
+        estudiantesInfo.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+        tablaEstudiantes.getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, 250));
+
+        tituloListarEstudiantes.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        tituloListarEstudiantes.setText("Lista de estudiantes registrados");
+        tablaEstudiantes.getContentPane().add(tituloListarEstudiantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+
+        line2.setText("__________________________________________________________________");
+        tablaEstudiantes.getContentPane().add(line2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setText("_______________________________________________________________________________________________________");
-        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        line1.setText("_______________________________________________________________________________________________________");
+        line1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel3.setText("ADMINISTRACIÓN DE ESTUDIANTES");
-        jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        tituloAdministración.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        tituloAdministración.setText("ADMINISTRACIÓN DE ESTUDIANTES");
+        tituloAdministración.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         btnGuardar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         btnGuardar.setText("Guardar");
@@ -116,8 +124,8 @@ public class ViewEstudiante extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel1.setText("Nombre:");
+        lblNombre.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        lblNombre.setText("Nombre:");
 
         txtNombre.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         txtNombre.setForeground(new java.awt.Color(153, 153, 153));
@@ -125,11 +133,6 @@ public class ViewEstudiante extends javax.swing.JFrame {
         txtNombre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtNombreMouseClicked(evt);
-            }
-        });
-        txtNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombre(evt);
             }
         });
 
@@ -142,11 +145,6 @@ public class ViewEstudiante extends javax.swing.JFrame {
                 txtApellidosMouseClicked(evt);
             }
         });
-        txtApellidos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtApellidos(evt);
-            }
-        });
 
         txtFecha.setForeground(new java.awt.Color(153, 153, 153));
         txtFecha.setText("AAAA-MM-DD");
@@ -157,28 +155,18 @@ public class ViewEstudiante extends javax.swing.JFrame {
                 txtFechaMouseClicked(evt);
             }
         });
-        txtFecha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFecha(evt);
-            }
-        });
 
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel4.setText("Apellidos:");
+        lblApellidos.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        lblApellidos.setText("Apellidos:");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel5.setText("Fecha de nacimiento:");
+        lblFecha.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        lblFecha.setText("Fecha de nacimiento:");
 
-        jLabel6.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jLabel6.setText("Código:");
+        lblCodigo.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblCodigo.setText("Código:");
 
         txtCodigo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         txtCodigo.setEnabled(false);
-        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -187,10 +175,10 @@ public class ViewEstudiante extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(lblCodigo)
+                    .addComponent(lblNombre)
+                    .addComponent(lblApellidos)
+                    .addComponent(lblFecha))
                 .addGap(78, 78, 78)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,20 +193,20 @@ public class ViewEstudiante extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(57, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                    .addComponent(lblCodigo)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
+                    .addComponent(lblApellidos)
                     .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(lblFecha, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(27, 27, 27))
         );
 
@@ -226,6 +214,24 @@ public class ViewEstudiante extends javax.swing.JFrame {
         txtFecha.getAccessibleContext().setAccessibleName("");
 
         txtMensaje.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+
+        btnActualizar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btnActualizar.setText("Actualizar");
+        btnActualizar.setEnabled(false);
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonActualizar(evt);
+            }
+        });
+
+        btnEliminar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminar(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -235,54 +241,48 @@ public class ViewEstudiante extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(jLabel2))
+                        .addComponent(line1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(115, 115, 115)
-                        .addComponent(jLabel3))
+                        .addComponent(tituloAdministración))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(74, 74, 74)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtMensaje))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(194, 194, 194)
+                        .addGap(47, 47, 47)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(76, 76, 76)
-                        .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(31, 31, 31)
+                        .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(82, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
+                .addComponent(tituloAdministración)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(line1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtMensaje)
                 .addGap(25, 25, 25)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(78, 78, 78))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtFecha(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFecha
-        
-    }//GEN-LAST:event_txtFecha
-
-    private void txtApellidos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidos
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtApellidos
-
-    private void txtNombre(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombre
 
     private void botonGuardar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardar
         
@@ -314,10 +314,6 @@ public class ViewEstudiante extends javax.swing.JFrame {
         txtApellidos.setForeground(Color.BLACK);
     }//GEN-LAST:event_txtApellidosMouseClicked
 
-    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoActionPerformed
-
     private void botonListar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonListar
         tablaEstudiantes.setVisible(true);
         List<Estudiante> estudiantes = controladorEstudiante.verEstudiantes();
@@ -336,6 +332,70 @@ public class ViewEstudiante extends javax.swing.JFrame {
             fila++;
         }
     }//GEN-LAST:event_botonListar
+
+    private void estudiantesInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_estudiantesInfoMouseClicked
+        int row = estudiantesInfo.getSelectedRow();
+        TableModel tableModel = estudiantesInfo.getModel();
+        Estudiante estudiante = new Estudiante();
+        estudiante.setCodigo((long) tableModel.getValueAt(row, 0));
+        estudiante.setNombre((String) tableModel.getValueAt(row,1));
+        estudiante.setApellidos((String) tableModel.getValueAt(row, 2));
+        estudiante.setFechaNacimiento((String) tableModel.getValueAt(row, 3));
+        
+        txtCodigo.setForeground(Color.BLACK);
+        txtCodigo.setText(Long.toString(estudiante.getCodigo()));
+        txtNombre.setForeground(Color.BLACK);
+        txtNombre.setText(estudiante.getNombre());
+        txtApellidos.setForeground(Color.BLACK);
+        txtApellidos.setText(estudiante.getApellidos());
+        txtFecha.setForeground(Color.BLACK);
+        txtFecha.setText(estudiante.getFechaNacimiento());
+        tablaEstudiantes.setVisible(false);
+        
+        btnActualizar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnGuardar.setEnabled(false);
+    }//GEN-LAST:event_estudiantesInfoMouseClicked
+
+    private void botonActualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizar
+        Estudiante estudiante = new Estudiante(txtNombre.getText(), txtApellidos.getText(), txtFecha.getText());
+        estudiante.setCodigo(Long.parseLong(txtCodigo.getText()));
+        if(controladorEstudiante.actualizar(estudiante)){
+            txtMensaje.setForeground(Color.GREEN);
+            txtMensaje.setText("Se ha Actualizado EXITOSAMENTE");
+        }else{
+            txtMensaje.setForeground(Color.RED);
+            txtMensaje.setText("No se logro registrar el estudiante");
+        }
+        txtNombre.setText(" ");
+        txtApellidos.setText(" ");
+        txtFecha.setText(" ");
+        txtCodigo.setText(" ");
+        
+        btnActualizar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+    }//GEN-LAST:event_botonActualizar
+
+    private void botonEliminar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminar
+        Estudiante estudiante = new Estudiante(txtNombre.getText(), txtApellidos.getText(), txtFecha.getText());
+        estudiante.setCodigo(Long.parseLong(txtCodigo.getText()));
+        if(controladorEstudiante.eliminar(estudiante)){
+            txtMensaje.setForeground(Color.GREEN);
+            txtMensaje.setText("Se ha Eliminado EXITOSAMENTE");
+        }else{
+            txtMensaje.setForeground(Color.RED);
+            txtMensaje.setText("No se logro registrar el estudiante");
+        }
+        txtNombre.setText(" ");
+        txtApellidos.setText(" ");
+        txtFecha.setText(" ");
+        txtCodigo.setText(" ");
+        
+        btnActualizar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+    }//GEN-LAST:event_botonEliminar
 
     /**
      * @param args the command line arguments
@@ -373,18 +433,22 @@ public class ViewEstudiante extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnListar;
     private javax.swing.JTable estudiantesInfo;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblApellidos;
+    private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel line1;
+    private javax.swing.JLabel line2;
     private javax.swing.JFrame tablaEstudiantes;
+    private javax.swing.JLabel tituloAdministración;
+    private javax.swing.JLabel tituloListarEstudiantes;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JFormattedTextField txtFecha;

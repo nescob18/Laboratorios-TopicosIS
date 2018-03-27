@@ -27,15 +27,15 @@ public class ControladorEstudiante {
     }
 	
     //llama al DAO para actualizar un cliente
-    public void actualizar(Estudiante estudiante) {
+    public boolean actualizar(Estudiante estudiante) {
 	IEstudianteDAO  dao = new  EstudianteDAO();
-	dao.actualizar(estudiante);
+	return dao.actualizar(estudiante);
     }
 	
     //llama al DAO para eliminar un cliente
-    public void eliminar(Estudiante estudiante) {
+    public boolean eliminar(Estudiante estudiante) {
 	IEstudianteDAO dao = new  EstudianteDAO();
-	dao.eliminar(estudiante);
+	return dao.eliminar(estudiante);
     }
 	
     //llama al DAO para obtener todos los clientes y luego los muestra en la vista

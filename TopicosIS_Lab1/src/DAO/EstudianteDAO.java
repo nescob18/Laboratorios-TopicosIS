@@ -80,7 +80,7 @@ public class EstudianteDAO implements IEstudianteDAO{
         Connection connect = null;
         Statement stm = null;
 	boolean actualizar = false;	
-        String sql = "UPDATE Estudiante SET Nombre='"+estudiante.getNombre()+"', Apellidos='"+estudiante.getApellidos()+"', FechaNacimiento='"+estudiante.getFechaNacimiento()+"'" +" WHERE Codigo="+estudiante.getCodigo();
+        String sql = "UPDATE `Estudiante` SET `Nombre`= " + '\u0022' + estudiante.getNombre() + '\u0022' + ", `Apellidos`= " + '\u0022' + estudiante.getApellidos() + '\u0022' + ", `FechaNacimiento`= '" + estudiante.getFechaNacimiento() + "' WHERE Codigo = " + estudiante.getCodigo();
 	try {
             connect = ConexionBD.conectar();
             stm = connect.createStatement();
@@ -97,10 +97,8 @@ public class EstudianteDAO implements IEstudianteDAO{
     public boolean eliminar(Estudiante estudiante) {
         Connection connect = null;
 	Statement stm = null;
-		
 	boolean eliminar = false;
-				
-	String sql = "DELETE FROM Estudiante WHERE Codigo="+estudiante.getCodigo();
+	String sql = "DELETE FROM `Estudiante` WHERE Codigo=" + estudiante.getCodigo();
 	try {
             connect = ConexionBD.conectar();
             stm = connect.createStatement();
