@@ -14,7 +14,8 @@ import datos.modelo.Estudiante;
  */
 public interface IEstudianteDAO {
     public boolean registrar(Estudiante estudiante);
-    public List<Estudiante> obtener();
+    public List<Estudiante> obtenerTodos();
+    public Estudiante obtenerUno(Estudiante estudiante);
     public boolean actualizar(Estudiante cliente);
     public boolean eliminar(Estudiante cliente);
 }

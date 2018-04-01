@@ -5,6 +5,7 @@
  */
 package datos.esquemaBD;
 
+import datos.infoHostBD.infoHostBD;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,20 +16,18 @@ import java.util.ArrayList;
  * @author Nescob18
  * @author Yorman Aguirre
  */
-public abstract class esquemaBD {
+public abstract class esquemaBD {    
     
-    public static ArrayList<String> agregarNuevasTablas(){
-        ArrayList<String> arrTabla = new ArrayList<>();
+    public static void crearBD(Connection con){
         
-        arrTabla.add( 
-        "CREATE TABLE IF NOT EXISTS Estudiante (" +
-        "Codigo BIGINT(12) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-        "Nombre VARCHAR(20)," +
-        "Apellidos VARCHAR(30)," +
-        "FechaNacimiento DATE)"          
-        );
-        
-        return arrTabla;
+        try {
+           String nuevaBD = "CREATE DATABASE IF NOT EXISTS " + infoHostBD.getNombreBD();
+           Statement st = con.createStatement();
+           st.executeUpdate(nuevaBD);
+        } catch (SQLException e) {
+            System.out.println("Un error ocurrio creando la BD");
+            e.printStackTrace();
+        }
     }
     
     public static void crearTablasBD(Connection con){
@@ -39,10 +38,24 @@ public abstract class esquemaBD {
            for (String tabla : arrTabla) {
                 st.executeUpdate(tabla);
            }
-           System.out.println("Tabla creada");
         } catch (SQLException e) {
             System.out.println("Un error ocurrio creando la tabla");
             e.printStackTrace();
         }
+    }
+    
+    
+    public static ArrayList<String> agregarNuevasTablas(){
+        ArrayList<String> arrTabla = new ArrayList<>();
+        
+        arrTabla.add( 
+        "CREATE TABLE IF NOT EXISTS Estudiante (" +
+        "Codigo BIGINT(12) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+        "Nombre VARCHAR(20) NOT NULL," +
+        "Apellidos VARCHAR(30) NOT NULL," +
+        "FechaNacimiento DATE NOT NULL )"          
+        );
+        
+        return arrTabla;
     }
 }

@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
  
-import datos.conexion.ConexionBD;
+import datos.conexion.Conexion;
 import datos.modelo.Estudiante;
 /**
  *
@@ -29,7 +29,7 @@ public class EstudianteDAO implements IEstudianteDAO{
         String values = "\"" + estudiante.getNombre() + "\",\"" + estudiante.getApellidos() +"\",'" + estudiante.getFechaNacimiento() +"'";
         String sql = "INSERT INTO `Estudiante`(`Nombre`, `Apellidos`, `FechaNacimiento`) VALUES (" + values + ")";
         try {			
-            con =ConexionBD.conectar();
+            con =Conexion.conectarBD();
             stm = con.createStatement();
             stm.execute(sql);
             registrar = true;
@@ -43,7 +43,7 @@ public class EstudianteDAO implements IEstudianteDAO{
     }
     
     @Override
-    public List<Estudiante> obtener() {
+    public List<Estudiante> obtenerTodos() {
 	Connection co = null;
 	Statement stm = null;
 	ResultSet res = null;
@@ -53,7 +53,7 @@ public class EstudianteDAO implements IEstudianteDAO{
 	List<Estudiante> listaEstudiante= new ArrayList<Estudiante>();
 		
 	try {			
-            co = ConexionBD.conectar();
+            co = Conexion.conectarBD();
             stm = co.createStatement();
             res = stm.executeQuery(sql);
             while (res.next()) {
@@ -76,13 +76,42 @@ public class EstudianteDAO implements IEstudianteDAO{
     }
     
     @Override
+    public Estudiante obtenerUno(Estudiante estudiante) {
+	Connection co = null;
+	Statement stm = null;
+	ResultSet res = null;
+		
+	String sql = "SELECT * FROM Estudiante WHERE codigo = '" + estudiante.getCodigo() + "'";	
+         
+	try {			
+            co = Conexion.conectarBD();
+            stm = co.createStatement();
+            res = stm.executeQuery(sql);
+            if (res.next()) {
+                estudiante.setCodigo(res.getLong(1));
+                estudiante.setNombre(res.getString(2));
+                estudiante.setApellidos(res.getString(3));
+                estudiante.setFechaNacimiento(res.getString(4));
+            }
+            stm.close();
+            res.close();
+            co.close();
+	} catch (SQLException e) {
+            System.out.println("Error: Clase EstudianteDAO, método obtener");
+            e.printStackTrace();
+        }
+		
+        return estudiante;
+    }
+    
+    @Override
     public boolean actualizar(Estudiante estudiante) {
         Connection connect = null;
         Statement stm = null;
 	boolean actualizar = false;	
         String sql = "UPDATE `Estudiante` SET `Nombre`= " + '\u0022' + estudiante.getNombre() + '\u0022' + ", `Apellidos`= " + '\u0022' + estudiante.getApellidos() + '\u0022' + ", `FechaNacimiento`= '" + estudiante.getFechaNacimiento() + "' WHERE Codigo = " + estudiante.getCodigo();
 	try {
-            connect = ConexionBD.conectar();
+            connect = Conexion.conectarBD();
             stm = connect.createStatement();
             stm.execute(sql);
             actualizar = true;
@@ -100,7 +129,7 @@ public class EstudianteDAO implements IEstudianteDAO{
 	boolean eliminar = false;
 	String sql = "DELETE FROM `Estudiante` WHERE Codigo=" + estudiante.getCodigo();
 	try {
-            connect = ConexionBD.conectar();
+            connect = Conexion.conectarBD();
             stm = connect.createStatement();
             stm.execute(sql);
             eliminar = true;

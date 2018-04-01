@@ -6,9 +6,9 @@
 package topicosis_lab1;
 
 import java.sql.Connection;
-import datos.conexion.ConexionBD;
+import datos.conexion.Conexion;
 import datos.esquemaBD.esquemaBD;
-import presentacion.vista.ViewEstudiante;
+import presentacion.vista.ListadoEstudiantes;
 
 /**
  *
@@ -17,13 +17,21 @@ import presentacion.vista.ViewEstudiante;
  */
 public class TopicosIS_Lab1 {
 
+    
+    public static void modelarBD(){
+        Connection con = Conexion.conectarHost();
+        esquemaBD.crearBD(con);
+        
+        con = Conexion.conectarBD();
+        esquemaBD.crearTablasBD(con);
+    }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Connection con = ConexionBD.conectar();
-        esquemaBD.crearTablasBD(con);
-        ViewEstudiante vista = new ViewEstudiante();
+        modelarBD();
+        ListadoEstudiantes vista = new ListadoEstudiantes();
         vista.setVisible(true);
     }
 }
